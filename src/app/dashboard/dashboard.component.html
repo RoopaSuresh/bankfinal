@@ -1,0 +1,344 @@
+<!-- As a link -->
+<nav class="navbar navbar-light bg-dark ">
+    <a class="navbar-brand  " href="#" style="color:rgb(85, 98, 237);"><b>&#169; HAFC Bank Pvt.Ltd </b></a>
+    <span class="quote text-light">Giving you freedom...</span>
+</nav>
+
+<!-- //welcome user -->
+<!-- <h1 style="color: white;">welcome {{user}}</h1> -->
+
+<!-- welcome user+logout -->
+<h1 style="color: white;">welcome {{user}} <button (click)="logout()" style="margin-top: 10px; float: right; margin-right: 10px;" class="btn btn-warning">Logout</button></h1>
+
+<!-- date -->
+<!-- <p style="color: white;">{{lDate}}</p> -->
+
+<!-- to show date in a format ie, using pipe -->
+<p style="color: white;"> Login details: {{lDate | date:'short'}}</p>
+
+
+<!-- transaction history -->
+<!-- // slash is given before transaction ie, the router link to change the page from dashboard to transaction -->
+<a routerLink="/transaction">Transaction history</a>
+
+<!-- //delete button -->
+<button (click)="deleteAccount()" style="margin-top: 10px; float: right; margin-right: 10px" class="btn btn-danger">Delete my account</button>
+<hr>
+
+
+<!-- //child -->
+<app-delete-confirm (onDelete)="delete($event)" (onCancel)="cancel()" [item]="acno"></app-delete-confirm>
+
+<!-- animation -->
+<app-animation-demo></app-animation-demo>
+
+
+<!-- //deposit -->
+<!-- <div class="container col-md-12 mt-0"> -->
+        <!-- for blurring or removing deposit and withdraw form on clicking delete my account button -->
+    <div [ngClass]="acno?'style1':'' " class="container col-md-12 mt-0">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                                <!-- highlighting heading -->
+                <h3 appHighlight  class="text-center">Deposit form</h3>
+
+            </div>
+            <div class="card-body">
+                <!-- <form> -->
+
+                <!-- //ngsubmit -->
+                <!-- <form (ngSubmit)="deposit()"> -->
+
+                                    <!-- //reactive form -->
+                <form [formGroup]="depositForm" (ngSubmit)="deposit()">
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <!-- property binding -->
+                        <!-- <input type="text" class="form-control"  [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- event binding with event -->
+                        <!-- <input type="text" class="form-control" (change)="acnoChange($event)" [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- template reference -->
+                        <!-- <input type="text" class="form-control"#acno [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="text" class="form-control" [(ngModel)]="acno" name="acno" placeholder=accno
+                            id="login_accno" required> -->
+
+                                                    <!-- //reactive form -->
+                        <input type="text" class="form-control" formControlName="acno" name="acno" placeholder=accno
+                        id="login_accno" required>
+
+
+
+                    </div>
+
+
+                    <!-- div for invalid account number -->
+                    <!-- inside get we should give what is inside formControlName -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.depositForm.get('acno')?.touched||this.depositForm.get('acno')?.dirty)&&this.depositForm.get('acno')?.errors">
+                            Invalid account number</div>
+
+                    </div>
+
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <!-- event binding with event -->
+                        <!-- <input type="password" class="form-control" (change)="pswdChange($event)" placeholder="password" id="login_password" required> -->
+
+                        <!-- template reference -->
+                        <!-- <input type="password" class="form-control" #pswd placeholder="password" id="login_password" required> -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="password" class="form-control" [(ngModel)]="pswd" name="pswd"
+                            placeholder="password" id="login_password" required> -->
+
+
+                                                    <!-- //reactive form -->
+                        <input type="password" class="form-control" formControlName="pswd" name="pswd"
+                        placeholder="password" id="login_password" required>
+
+
+
+                    </div>
+
+
+                                        <!-- div for invalid password -->
+                    <!-- inside get we should give what is inside formControlName --> -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.depositForm.get('pswd')?.touched||this.depositForm.get('pswd')?.dirty)&&this.depositForm.get('pswd')?.errors">
+                            Invalid password</div>
+
+                    </div>
+
+
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <!-- <input type="text" class="form-control" [(ngModel)]="amount" name="amount" placeholder="Amount"
+                            id="amt" required> -->
+
+
+                                                    <!-- //reactive form -->
+                        <input type="text" class="form-control" formControlName="amount" name="amount" placeholder=amount
+                        id="login_amt" required>
+
+                    </div>
+
+                    <!-- div for invalid amount -->
+                    <!-- inside get we should give what is inside formControlName -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.depositForm.get('amount')?.touched||this.depositForm.get('amount')?.dirty)&&this.depositForm.get('amount')?.errors">
+                            Invalid amount</div>
+
+                    </div>
+
+
+
+
+
+
+                    <div class="form-group">
+                        <!-- event binding -->
+                        <!-- <input type="submit" value="Login" (click)="login()" class="btn float-right login_btn " style="width:50%" > -->
+
+
+                        <!-- event binding with event -->
+                        <!-- <input type="submit" value="Login" (click)="login()" class="btn float-right login_btn " style="width:50%" > -->
+
+                        <!-- template reference -->
+                        <!-- <input type="submit" value="Login" (click)="login(acno,pswd)" class="btn float-right login_btn " style="width:50%" > -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="submit" value="Register" (click)="register()" class="btn float-right login_btn "
+                            style="width:50%"> -->
+
+
+                        <!-- //ngsubmit -->
+                        <input type="submit" value="Deposit" class="btn float-right login_btn " style="width:50%">
+
+
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- withdrawal -->
+<!-- <div class="container col-md-12 mt-0"> -->
+    <!-- for blurring or removing deposit and withdraw form on clicking delete my account button -->
+    <div [ngClass]="acno?'style1':'' " class="container col-md-12 mt-0">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <!-- highlighting heading -->
+                <h3 appHighlight class="text-center">Withdrawal form</h3>
+
+            </div>
+            <div class="card-body">
+                <!-- <form> -->
+
+                <!-- //ngsubmit -->
+                <!-- <form (ngSubmit)="withdraw()"> -->
+
+
+                                                        <!-- //reactive form -->
+                <form [formGroup]="withdrawForm" (ngSubmit)="withdraw()">
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <!-- property binding -->
+                        <!-- <input type="text" class="form-control"  [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- event binding with event -->
+                        <!-- <input type="text" class="form-control" (change)="acnoChange($event)" [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- template reference -->
+                        <!-- <input type="text" class="form-control"#acno [placeholder]="accno" id="login_accno" required> -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="text" class="form-control" [(ngModel)]="acno1" name="acno" placeholder=accno
+                            id="login_accno1" required> -->
+
+                            
+                                                    <!-- //reactive form -->
+                        <input type="text" class="form-control" formControlName="acno" name="acno" placeholder=accno
+                        id="login_accno" required>
+
+
+                    </div>
+
+                    <!-- div for invalid account number -->
+                    <!-- inside get we should give what is inside formControlName -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.withdrawForm.get('acno')?.touched||this.withdrawForm.get('acno')?.dirty)&&this.withdrawForm.get('acno')?.errors">
+                            Invalid account number</div>
+
+                    </div>
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <!-- event binding with event -->
+                        <!-- <input type="password" class="form-control" (change)="pswdChange($event)" placeholder="password" id="login_password" required> -->
+
+                        <!-- template reference -->
+                        <!-- <input type="password" class="form-control" #pswd placeholder="password" id="login_password" required> -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="password" class="form-control" [(ngModel)]="pswd1" name="pswd"
+                            placeholder="password" id="login_password1" required> -->
+
+                        <!-- //reactive form -->
+                        <input type="password" class="form-control" formControlName="pswd" name="pswd"
+                            placeholder="password" id="login_password" required>
+
+                    </div>
+
+
+                                        <!-- div for invalid password -->
+                    <!-- inside get we should give what is inside formControlName --> -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.withdrawForm.get('pswd')?.touched||this.withdrawForm.get('pswd')?.dirty)&&this.withdrawForm.get('pswd')?.errors">
+                            Invalid password</div>
+
+                    </div>
+
+
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <!-- <input type="text" class="form-control" [(ngModel)]="amount1" name="amount" placeholder="Amount"
+                            id="amt1" required> -->
+
+                                                    <!-- //reactive form -->
+                                                    <input type="text" class="form-control" formControlName="amount" name="amount" placeholder=amount
+                                                    id="login_amt" required>
+                            
+
+                    </div>
+
+                    <!-- div for invalid amount -->
+                    <!-- inside get we should give what is inside formControlName -->
+                    <div>
+                        <div style="color: red;"
+                            *ngIf="(this.withdrawForm.get('amount')?.touched||this.withdrawForm.get('amount')?.dirty)&&this.withdrawForm.get('amount')?.errors">
+                            Invalid amount</div>
+
+                    </div>
+
+
+
+
+
+
+                    <div class="form-group">
+                        <!-- event binding -->
+                        <!-- <input type="submit" value="Login" (click)="login()" class="btn float-right login_btn " style="width:50%" > -->
+
+
+                        <!-- event binding with event -->
+                        <!-- <input type="submit" value="Login" (click)="login()" class="btn float-right login_btn " style="width:50%" > -->
+
+                        <!-- template reference -->
+                        <!-- <input type="submit" value="Login" (click)="login(acno,pswd)" class="btn float-right login_btn " style="width:50%" > -->
+
+                        <!-- two way binding -->
+                        <!-- <input type="submit" value="Register" (click)="register()" class="btn float-right login_btn "
+                            style="width:50%"> -->
+
+
+                        <!-- //ngsubmit -->
+                        <input type="submit" value="Withdrawal" class="btn float-right login_btn " style="width:50%">
+
+
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
