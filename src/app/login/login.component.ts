@@ -179,25 +179,58 @@ export class LoginComponent implements OnInit {
   // }
 
 
-  //login reactive form
+  // //login reactive form
+  // login() {
+  //   var acno = this.loginForm.value.acno
+  //   var pswd = this.loginForm.value.pswd
+  //   if (this.loginForm.valid) {
+  //     const result = this.ds.login(acno, pswd)
+
+  //     if (result) {
+  //       alert("login success")
+  //       this.routerLogin.navigateByUrl("dashboard")
+  //     }
+  //   }
+  //   else{
+  //     alert("Invalid form")
+  //   }
+
+
+  // }
+
+
+
+
+  //login after integrating with backend
   login() {
     var acno = this.loginForm.value.acno
     var pswd = this.loginForm.value.pswd
-    if (this.loginForm.valid) {
-      const result = this.ds.login(acno, pswd)
 
-      if (result) {
-        alert("login success")
-        this.routerLogin.navigateByUrl("dashboard")
-      }
+    if (this.loginForm.valid) {
+      //asynchronous call login
+      this.ds.login(acno, pswd)
+
+        .subscribe((result: any) => {
+          if (result) {
+            localStorage.setItem('currentAcno', JSON.stringify(result.currentAcno))
+            localStorage.setItem('currentUname', JSON.stringify(result.currentUname))
+            localStorage.setItem('token', JSON.stringify(result.token))
+            alert(result.message)
+            this.routerLogin.navigateByUrl("dashboard")
+          }
+        },
+          (result) => {
+            alert(result.error.message)
+          }
+        )
+
     }
-    else{
+    else {
       alert("Invalid form")
     }
-    
+
 
   }
-
 
 
 }

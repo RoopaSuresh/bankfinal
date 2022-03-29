@@ -69,13 +69,25 @@ acno:any
 
 
 
+  // constructor(private ds: DataService, private fb: FormBuilder,private router:Router) {
+  //   //welcome user
+  //   this.user=this.ds.currentUname
+
+  //   //for date (it can be done by creating a object by creating a new class)
+  //   this.lDate=new Date()
+  //  }
+
+//after backend 
   constructor(private ds: DataService, private fb: FormBuilder,private router:Router) {
-    //welcome user
-    this.user=this.ds.currentUname
+    //welcome user name should appear
+    if(localStorage.getItem("currentAcno")){
+      this.user=JSON.parse(localStorage.getItem('currentUname')||'')
+    }
 
     //for date (it can be done by creating a object by creating a new class)
     this.lDate=new Date()
    }
+
 
 
   ngOnInit(): void {
@@ -103,7 +115,29 @@ acno:any
   //   }
   // }
 
-  //deposit reactive form
+  // //deposit reactive form
+  // deposit() {
+
+  //   var acno = this.depositForm.value.acno
+  //   var pswd = this.depositForm.value.pswd
+  //   var amount = this.depositForm.value.amount
+
+  //   if (this.depositForm.valid) {
+    //calling deposit function of dataservice
+  //     const result = this.ds.deposit(acno, pswd, amount)
+
+  //     if (result) {
+  //       alert(amount + " successfully deposited and new balance is " + result)
+  //     }
+  //   }
+  //   else {
+  //     alert("Invalid form")
+  //   }
+
+  // }
+
+
+  //deposit after integrating with backend
   deposit() {
 
     var acno = this.depositForm.value.acno
@@ -111,17 +145,29 @@ acno:any
     var amount = this.depositForm.value.amount
 
     if (this.depositForm.valid) {
-      const result = this.ds.deposit(acno, pswd, amount)
+      //calling deposit function of dataservice - asynchronous
+      this.ds.deposit(acno, pswd, amount)
 
-      if (result) {
-        alert(amount + " successfully deposited and new balance is " + result)
-      }
+     .subscribe((result:any)=>{
+       if(result){
+         alert(result.message)
+       }
+     },
+     (result)=>{
+       alert(result.error.message)
+     }
+     )
     }
     else {
       alert("Invalid form")
     }
 
   }
+
+
+
+
+
 
 
 
@@ -140,19 +186,47 @@ acno:any
   //   }
   // }
 
-  //withdraw.reactive form
+  // //withdraw.reactive form
+  // withdraw() {
+  //   var acno = this.withdrawForm.value.acno
+  //   var pswd = this.withdrawForm.value.pswd
+  //   var amount = this.withdrawForm.value.amount
+  //   if (this.withdrawForm.valid) {
+  //     //calling withdraw function of dataservice
+  //     const result = this.ds.withdraw(acno, pswd, amount)
+
+  //     if (result) {
+  //       alert(amount + " successfully debited and new balance is " + result)
+  //     }
+  //   }
+  //   else {
+
+  //     alert("Invalid form")
+  //   }
+  // }
+
+  //withdraw after integrating with backend
   withdraw() {
     var acno = this.withdrawForm.value.acno
     var pswd = this.withdrawForm.value.pswd
     var amount = this.withdrawForm.value.amount
     if (this.withdrawForm.valid) {
-      //calling withdraw function of dataservice
-      const result = this.ds.withdraw(acno, pswd, amount)
+            //calling deposit function of dataservice - asynchronous
 
-      if (result) {
-        alert(amount + " successfully debited and new balance is " + result)
+      const result = this.ds.withdraw(acno, pswd, amount)
+      .subscribe((result:any)=>{
+        if(result){
+          alert(result.message)
+        }
+      },
+      (result)=>{
+        alert(result.error.message)
       }
-    }
+      )
+     }
+ 
+    
+    
     else {
 
       alert("Invalid form")
@@ -162,12 +236,30 @@ acno:any
 
 
 
-//logout
+
+
+
+
+
+
+
+// //logout
+// logout(){
+//   localStorage.removeItem("currentAcno")
+//   localStorage.removeItem("currentUname")
+// this.router.navigateByUrl("")
+// }
+
+
+//logout after integrating with backend
 logout(){
   localStorage.removeItem("currentAcno")
   localStorage.removeItem("currentUname")
+  localStorage.removeItem("token")
 this.router.navigateByUrl("")
 }
+
+
 
 
 

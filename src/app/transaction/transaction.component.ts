@@ -12,12 +12,34 @@ transactions:any
 acno:any
 
 
+  // constructor(private ds:DataService) { 
+  //   this.acno=this.ds.currentAcno
+  //   this.transactions=this.ds.getTransaction(this.acno)
+  //   console.log(this.transactions);
+    
+  // }
+
   constructor(private ds:DataService) { 
-    this.acno=this.ds.currentAcno
+    this.acno=JSON.parse(localStorage.getItem('currentAcno')||'')
+    //asynchronous
     this.transactions=this.ds.getTransaction(this.acno)
-    console.log(this.transactions);
+.subscribe((result:any)=>{
+  if(result){
+    this.transactions=result.transaction
+  }
+},
+result=>{
+alert(result.message)
+}
+)
+
+
+
+
+    // console.log(this.transactions);
     
   }
+
 
   ngOnInit(): void {
   }
