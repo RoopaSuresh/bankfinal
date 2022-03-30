@@ -270,15 +270,42 @@ deleteAccount(){
 }
 
 
+
+
 //cancel
 cancel(){
   this.acno=""
 }
 
+// delete(event:any){
+//   alert("Delete account "+event+" from parent")
+//   this.router.navigateByUrl("")
+// }
+
+
+// delete after integrating with backend
 delete(event:any){
-  alert("Delete account "+event+" from parent")
-  this.router.navigateByUrl("")
+//asynchronous
+this.ds.delete(event)
+.subscribe((result:any)=>{
+  if(result){
+  
+    alert(result.message)
+
+    localStorage.removeItem("currentAcno")
+    localStorage.removeItem("currentUname")
+    localStorage.removeItem("token")
+  
+    this.router.navigateByUrl("")
+
+  }
+},
+(result)=>{
+  alert(result.error.message)
 }
+)
+}
+
 
 
 

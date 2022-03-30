@@ -355,16 +355,17 @@ const data={
 //transaction API CALL
 return this.http.post('http://localhost:3000/transaction', data,this.getOptions())
 
-
-
-
     // return this.database[acno]["transaction"]
   }
 
 
 
 
-
+//delete acc after integrating with backend
+delete(acno:any){
+  //no need for body here only API call is enough
+  return this.http.delete('http://localhost:3000/deleteAcc/'+acno,this.getOptions())
+}
 
 
 
